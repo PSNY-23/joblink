@@ -8,6 +8,8 @@ import SalaryEstimate from "../pages/SalaryEstimate";
 import NotFound from "../Pages/NotFound"; 
 import Contact from "../Pages/Contact";
 import Privacy from "../Pages/Privacy";
+import Login from "../Pages/Login";
+import Signup from "../Pages/Signup";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +50,14 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/login",
+    element: <Login/>
+
+  }, {
+    path: "/signup",
+    element:<Signup/>
+  }
 ]);
 
 export default router;
