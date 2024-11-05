@@ -11,19 +11,27 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 
 let client;
 let jobsCollections;
+console.log(
+  `user : ${process.env.DB_USER} and Password is ${process.env.DB_PASSWORD}`
+);
 
 async function connectToDb() {
   try {
-    const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@job-platform.enxd7.mongodb.net/?retryWrites=true&w=majority&appName=job-platform`
+    // MongoDB connection string from environment variables
+    console.log(
+      `user : ${process.env.DB_USER} and Password is ${process.env.DB_PASSWORD}`
+    );
+    const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@job-platform.enxd7.mongodb.net/?retryWrites=true&w=majority&appName=job-platform`;
+
+    // MongoDB client configuration (removed deprecated options)
     client = new MongoClient(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      serverApi: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
+      serverApi: ServerApiVersion.v1, // Keep this for API versioning if needed
     });
 
+    // Connect to MongoDB
     await client.connect();
+
+    // Get database and collection references
     const db = client.db("job-platform");
     jobsCollections = db.collection("demoJobs");
     console.log("Connected to MongoDB!");
