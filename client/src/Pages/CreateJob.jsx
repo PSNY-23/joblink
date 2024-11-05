@@ -12,7 +12,8 @@ function CreateJob() {
   } = useForm();
 
   const onSubmit = (data) => {
-    fetch("http://localhost:3000/post-job", {
+    // fetch("http://localhost:3000/post-job", {
+      fetch("https://joblink-server-nine.vercel.app/", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(data),
