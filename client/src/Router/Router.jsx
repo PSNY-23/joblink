@@ -4,7 +4,7 @@ import Home from "../Pages/Home";
 import About from "../Pages/About";
 import CreateJob from "../Pages/CreateJob";
 import MyJobs from "../Pages/MyJobs";
-import SalaryEstimate from "../pages/SalaryEstimate";
+import SalaryEstimate from "../Pages/SalaryEstimate";
 import NotFound from "../Pages/NotFound"; 
 import Contact from "../Pages/Contact";
 import Privacy from "../Pages/Privacy";
