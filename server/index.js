@@ -1,82 +1,88 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
+const serverless = require("serverless-http");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-//Middlewares
+// MongoDB connection setup
+const { MongoClient, ServerApiVersion } = require("mongodb");
+
+let client;
+let jobsCollections;
+
+async function connectToDb() {
+  try {
+    client = new MongoClient(process.env.DB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverApi: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    });
+
+    await client.connect();
+    const db = client.db("job-platform");
+    jobsCollections = db.collection("demoJobs");
+    console.log("Connected to MongoDB!");
+  } catch (error) {
+    console.error("MongoDB connection failed:", error);
+  }
+}
+
+// Ensure the DB connection is established before handling requests
+connectToDb();
+
+// Middlewares
 app.use(express.json());
 app.use(cors());
 
-// username = pankajteceract
-// password = 3evHGxpfXBXXOlcR
+// POST a job
+app.post("/post-job", async (req, res) => {
+  const body = req.body;
+  body.createdAt = new Date();
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@job-platform.enxd7.mongodb.net/?retryWrites=true&w=majority&appName=job-platform`;
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
-
-async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-
-    // create Database
-    const db = client.db("job-platform");
-    const jobsCollections = db.collection("demoJobs");
-
-    // post a job
-    app.post("/post-job", async (req, res) => {
-      const body = req.body;
-      body.creatAt = new Date();
-      //   console.log(body)
-      const result = await jobsCollections.insertOne(body);
-      if (result.insertedId) {
-        res.status(200).send(result);
-      } else {
-        return res.status(404).sendStatus({
-          message: "Can't insert😡, try again !",
-          status: false,
-        });
-      }
-    });
-
-    // get all jobs
-    app.get("/all-jobs", async (req, res) => {
-      const jobs = await jobsCollections.find().toArray();
-      res.send(jobs);
-    });
-
-    // get all jobs posted by a user with it's email id
-    app.get("/myJobs/:email", async (req, res) => {
-      const jobs = await jobsCollections.find({ postedBy: req.params.email }).toArray();
-      res.send(jobs)
-    });
-
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
-  } finally {
-    // Ensures that the client will close when you finish/error
-    // await client.close();
+    const result = await jobsCollections.insertOne(body);
+    if (result.insertedId) {
+      res.status(201).send(result); // 201 Created for POST requests
+    } else {
+      res.status(400).json({ message: "Job insertion failed!", status: false });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error!", status: false });
   }
-}
-run().catch(console.dir);
+});
 
+// GET all jobs
+app.get("/all-jobs", async (req, res) => {
+  try {
+    const jobs = await jobsCollections.find().toArray();
+    res.send(jobs);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching jobs", status: false });
+  }
+});
+
+// GET jobs posted by a specific user (using email)
+app.get("/myJobs/:email", async (req, res) => {
+  try {
+    const jobs = await jobsCollections
+      .find({ postedBy: req.params.email })
+      .toArray();
+    res.send(jobs);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching user's jobs", status: false });
+  }
+});
+
+// A simple ping endpoint to check if the server is running
 app.get("/", (req, res) => {
-  res.send("hellow world");
+  res.send("Hello, world!");
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+// Export the Express app wrapped in serverless-http for deployment on Vercel
+module.exports.handler = serverless(app);
