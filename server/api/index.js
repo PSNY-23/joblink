@@ -93,5 +93,10 @@ app.get("/", (req, res) => {
   res.send("Hello, world!");
 });
 
+// Log the port number the server is running on
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
 // Export the Express app wrapped in serverless-http for deployment on Vercel
 module.exports.handler = serverless(app);
