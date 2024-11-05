@@ -17,7 +17,8 @@ function Home() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("http://localhost:3000/all-jobs")
+    const apiUrl = process.env.REACT_APP_API_URL;
+    fetch(`${apiUrl}/all-jobs`)
       .then((res) => {
         if (!res.ok) throw new Error("Network response was not ok");
         return res.json();
