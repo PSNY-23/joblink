@@ -14,7 +14,8 @@ let jobsCollections;
 
 async function connectToDb() {
   try {
-    client = new MongoClient(process.env.DB_URI, {
+    const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@job-platform.enxd7.mongodb.net/?retryWrites=true&w=majority&appName=job-platform`
+    client = new MongoClient(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       serverApi: ServerApiVersion.v1,
