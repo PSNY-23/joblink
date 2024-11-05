@@ -13,7 +13,8 @@ function CreateJob() {
 
   const onSubmit = (data) => {
     // fetch("http://localhost:3000/post-job", {
-      fetch("https://joblink-server-nine.vercel.app/", {
+      const apiUrl = process.env.REACT_APP_API_URL; // Get the API URL from environment variables
+      fetch(`${apiUrl}/post-job`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(data),
