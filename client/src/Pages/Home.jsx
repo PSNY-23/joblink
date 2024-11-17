@@ -6,6 +6,8 @@ import Sidebar from "../sidebar/Sidebar";
 import NewsLetter from "../components/NewsLetter";
 import { FaFilter } from "react-icons/fa6";
 
+
+
 function Home() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [jobs, setJobs] = useState([]);
@@ -17,7 +19,7 @@ function Home() {
 
   useEffect(() => {
     setIsLoading(true);
-    const apiUrl = process.env.REACT_APP_API_URL;
+    const apiUrl = "http://localhost:3000";
     fetch(`${apiUrl}/all-jobs`)
       .then((res) => {
         if (!res.ok) throw new Error("Network response was not ok");
