@@ -19,7 +19,7 @@ function Home() {
 
   useEffect(() => {
     setIsLoading(true);
-    const apiUrl = "http://localhost:3000";
+    const apiUrl = "https://joblink-backend-2.onrender.com";
     fetch(`${apiUrl}/all-jobs`)
       .then((res) => {
         if (!res.ok) throw new Error("Network response was not ok");
