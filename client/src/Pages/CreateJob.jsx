@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import CreatableSelect from "react-select/creatable";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function CreateJob() {
+
+  const notify = () => toast("Wow so easy!");
   const [selectedOptions, setSelectedOptions] = useState(null);
   const {
     register,
@@ -12,20 +16,22 @@ function CreateJob() {
   } = useForm();
 
   const onSubmit = (data) => {
-    // fetch("http://localhost:3000/post-job", {
-      const apiUrl = process.env.REACT_APP_API_URL; // Get the API URL from environment variables
-      fetch(`${apiUrl}/post-job`, {
+    
+    fetch("/api/post-job", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(data),
     })
-      .then((res) => res.json())
       .then((result) => {
         console.log(result);
         if (result.acknowledged) {
-          alert("Job Posted successfully ✅");
+          notify();
         }
         reset();
+      })
+      .catch((error) => {
+        toast.error("Failed to post the job. Please try again."); // Error notification
+        console.error("Error posting job:", error);
       });
   };
 
@@ -55,9 +61,13 @@ function CreateJob() {
                 type="text"
                 defaultValue={"web developer"}
                 {...register("jobTitle", { required: "Job title is required" })}
-                className={`create-job-input px-3 py-1 border ${errors.jobTitle ? "border-red-500" : "border-gray-300"} rounded`}
+                className={`create-job-input px-3 py-1 border ${
+                  errors.jobTitle ? "border-red-500" : "border-gray-300"
+                } rounded`}
               />
-              {errors.jobTitle && <p className="text-red-500">{errors.jobTitle.message}</p>}
+              {errors.jobTitle && (
+                <p className="text-red-500">{errors.jobTitle.message}</p>
+              )}
             </div>
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg text-gray-500">
@@ -66,10 +76,16 @@ function CreateJob() {
               <input
                 type="text"
                 placeholder="Ex Microsoft"
-                {...register("companyName", { required: "Company name is required" })}
-                className={`create-job-input px-3 py-1 border ${errors.companyName ? "border-red-500" : "border-gray-300"} rounded`}
+                {...register("companyName", {
+                  required: "Company name is required",
+                })}
+                className={`create-job-input px-3 py-1 border ${
+                  errors.companyName ? "border-red-500" : "border-gray-300"
+                } rounded`}
               />
-              {errors.companyName && <p className="text-red-500">{errors.companyName.message}</p>}
+              {errors.companyName && (
+                <p className="text-red-500">{errors.companyName.message}</p>
+              )}
             </div>
           </div>
 
@@ -82,10 +98,16 @@ function CreateJob() {
               <input
                 type="text"
                 placeholder="e.g $20K"
-                {...register("minPrice", { required: "Minimum salary is required" })}
-                className={`create-job-input px-3 py-1 border ${errors.minPrice ? "border-red-500" : "border-gray-300"} rounded`}
+                {...register("minPrice", {
+                  required: "Minimum salary is required",
+                })}
+                className={`create-job-input px-3 py-1 border ${
+                  errors.minPrice ? "border-red-500" : "border-gray-300"
+                } rounded`}
               />
-              {errors.minPrice && <p className="text-red-500">{errors.minPrice.message}</p>}
+              {errors.minPrice && (
+                <p className="text-red-500">{errors.minPrice.message}</p>
+              )}
             </div>
             <div className="lg:w-1/2 w-full">
               <label className="block mb-2 text-lg text-gray-500">
@@ -94,10 +116,16 @@ function CreateJob() {
               <input
                 type="text"
                 placeholder="e.g $100K"
-                {...register("maxPrice", { required: "Maximum salary is required" })}
-                className={`create-job-input px-3 py-1 border ${errors.maxPrice ? "border-red-500" : "border-gray-300"} rounded`}
+                {...register("maxPrice", {
+                  required: "Maximum salary is required",
+                })}
+                className={`create-job-input px-3 py-1 border ${
+                  errors.maxPrice ? "border-red-500" : "border-gray-300"
+                } rounded`}
               />
-              {errors.maxPrice && <p className="text-red-500">{errors.maxPrice.message}</p>}
+              {errors.maxPrice && (
+                <p className="text-red-500">{errors.maxPrice.message}</p>
+              )}
             </div>
           </div>
 
@@ -110,14 +138,25 @@ function CreateJob() {
               <input
                 type="text"
                 placeholder="e.g San Francisco"
-                {...register("jobLocation", { required: "Job location is required" })}
-                className={`create-job-input px-3 py-1 border ${errors.jobLocation ? "border-red-500" : "border-gray-300"} rounded`}
+                {...register("jobLocation", {
+                  required: "Job location is required",
+                })}
+                className={`create-job-input px-3 py-1 border ${
+                  errors.jobLocation ? "border-red-500" : "border-gray-300"
+                } rounded`}
               />
-              {errors.jobLocation && <p className="text-red-500">{errors.jobLocation.message}</p>}
+              {errors.jobLocation && (
+                <p className="text-red-500">{errors.jobLocation.message}</p>
+              )}
             </div>
             <div className="lg:w-1/2 w-full">
-              <label className="block mb-2 text-lg text-gray-500">Salary Type</label>
-              <select {...register("salaryType")} className="create-job-input px-3 py-1 border border-gray-300 rounded">
+              <label className="block mb-2 text-lg text-gray-500">
+                Salary Type
+              </label>
+              <select
+                {...register("salaryType")}
+                className="create-job-input px-3 py-1 border border-gray-300 rounded"
+              >
                 <option value="">Choose Your Salary</option>
                 <option value="Hourly">Hourly</option>
                 <option value="Monthly">Monthly</option>
@@ -133,18 +172,26 @@ function CreateJob() {
                 Experience Level <span className="text-red-500">*</span>
               </label>
               <select
-                {...register("experienceLevel", { required: "Experience level is required" })}
-                className={`create-job-input px-3 py-1 border ${errors.experienceLevel ? "border-red-500" : "border-gray-300"} rounded`}
+                {...register("experienceLevel", {
+                  required: "Experience level is required",
+                })}
+                className={`create-job-input px-3 py-1 border ${
+                  errors.experienceLevel ? "border-red-500" : "border-gray-300"
+                } rounded`}
               >
                 <option value="">Choose Your Experience</option>
                 <option value="No Experience">No Experience</option>
                 <option value="Internship">Internship</option>
                 <option value="Work Remotely">Work Remotely</option>
               </select>
-              {errors.experienceLevel && <p className="text-red-500">{errors.experienceLevel.message}</p>}
+              {errors.experienceLevel && (
+                <p className="text-red-500">{errors.experienceLevel.message}</p>
+              )}
             </div>
             <div className="lg:w-1/2 w-full">
-              <label className="block mb-2 text-lg text-gray-500">Job Posting Date</label>
+              <label className="block mb-2 text-lg text-gray-500">
+                Job Posting Date
+              </label>
               <input
                 type="date"
                 {...register("postingDate")}
@@ -155,7 +202,9 @@ function CreateJob() {
 
           {/* Required Skill Set */}
           <div>
-            <label className="block mb-2 text-lg text-gray-500">Required Skill Set</label>
+            <label className="block mb-2 text-lg text-gray-500">
+              Required Skill Set
+            </label>
             <CreatableSelect
               className="create-job-input py-4"
               defaultValue={selectedOptions}
@@ -170,7 +219,9 @@ function CreateJob() {
           {/* Company Logo */}
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8 mb-5">
             <div className="lg:w-1/2 w-full">
-              <label className="block mb-2 text-lg text-gray-500">Company Logo</label>
+              <label className="block mb-2 text-lg text-gray-500">
+                Company Logo
+              </label>
               <input
                 type="url"
                 placeholder="e.g Paste Your Company Logo URL : https://example.com/logo"
@@ -179,7 +230,9 @@ function CreateJob() {
               />
             </div>
             <div className="lg:w-1/2 w-full">
-              <label className="block mb-2 text-lg text-gray-500">Employment Type</label>
+              <label className="block mb-2 text-lg text-gray-500">
+                Employment Type
+              </label>
               <select
                 {...register("employmentType")}
                 className="create-job-input px-3 py-1 border border-gray-300 rounded"
@@ -194,7 +247,9 @@ function CreateJob() {
 
           {/* Job Description */}
           <div className="w-full">
-            <label className="block mb-2 text-lg text-gray-500">Job Description</label>
+            <label className="block mb-2 text-lg text-gray-500">
+              Job Description
+            </label>
             <textarea
               {...register("description")}
               className="w-full pl-3 py-1 border border-gray-300 rounded focus:outline-blue"
@@ -215,9 +270,13 @@ function CreateJob() {
               type="email"
               placeholder="your email"
               {...register("postedBy", { required: "Email is required" })}
-              className={`create-job-input px-3 py-1 border ${errors.postedBy ? "border-red-500" : "border-gray-300"} rounded`}
+              className={`create-job-input px-3 py-1 border ${
+                errors.postedBy ? "border-red-500" : "border-gray-300"
+              } rounded`}
             />
-            {errors.postedBy && <p className="text-red-500">{errors.postedBy.message}</p>}
+            {errors.postedBy && (
+              <p className="text-red-500">{errors.postedBy.message}</p>
+            )}
           </div>
           <div className="flex justify-end align-center">
             <input

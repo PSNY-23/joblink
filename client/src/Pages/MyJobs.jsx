@@ -7,7 +7,7 @@ function MyJobs() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("http://localhost:3000/myJobs/pankajteceract@gmail.com")
+    fetch('/myJobs/pankajteceract@gmail.com')
       .then((res) => res.json())
       .then((data) => setJobs(data));
   }, []);

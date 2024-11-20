@@ -3,7 +3,7 @@ import { FiMapPin, FiSearch } from "react-icons/fi";
 
 function Banner({ query, handleInputChange }) {
   return (
-    <div className="max-w-screen-2xl container mx-auto xl:px-24 px-4 md:py-20 py-14">
+    <div className="max-w-screen-2xl container mx-auto lg:px-24 px-4 md:py-20 py-14">
       <h1 className="text-5xl font-bold text-primary mb-3">
        Find Your <span className="text-blue">Dream job</span> today
       </h1>
@@ -47,7 +47,7 @@ function Banner({ query, handleInputChange }) {
                           placeholder:text-gray-400 focus:right-0 sm:text-sm sm:leading-6
                            outline-none"
               onChange={handleInputChange}
-              value=''
+              value={query}
             />
             <FiMapPin className="absolute mt-2.5 ml-2 text-gray-400" />
           </div>

@@ -13,18 +13,22 @@ function Home() {
   const [jobs, setJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 10;
   const [query, setQuery] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
+  // The '/api' prefix will be proxied
+
+
   useEffect(() => {
     setIsLoading(true);
-    const apiUrl = `${process.env.REACT_APP_BACKEND_URI}`;
-    fetch(`${apiUrl}/all-jobs`)
+    // const apiUrl = import.meta.env.VITE_API_URL;
+    fetch('/api/all-jobs')
       .then((res) => {
         if (!res.ok) throw new Error("Network response was not ok");
         return res.json();
       })
+      
       .then((data) => {
         setJobs(data.reverse());
         setIsLoading(false);
@@ -42,10 +46,11 @@ function Home() {
   const filteredItems = useMemo(
     () =>
       jobs.filter((job) =>
-        job.jobTitle.toLowerCase().includes(query.toLowerCase())
+        job?.jobTitle?.toLowerCase().includes(query.toLowerCase())
       ),
     [jobs, query]
   );
+  
 
   const handleChange = (event) => {
     setSelectedCategory(event.target.value);
@@ -128,15 +133,15 @@ function Home() {
         )}
 
         {/* Job Listings */}
-        <div className="col-span-2 bg-white p-4 rounded-sm">
+        <div className="col-span-2  bg-white p-4 rounded-sm">
           {isLoading ? (
-            <p className="font-bold">Loading....</p>
+            <p className="font-bold">🔃Loading....</p>
           ) : result.length > 0 ? (
             <Jobs result={result} />
           ) : (
             <>
               <h3 className="text-lg font-bold mb-2">{result.length} Jobs</h3>
-              <p>No data found</p>
+              <p className="">No data found</p>
             </>
           )}
 

@@ -2,7 +2,7 @@ import React from "react";
 
 function Jobs({ result }) {
   return (
-    <div>
+    <div className="">
       <h3 className="text-lg font-bold mb-2">{result.length} Jobs</h3>
       {result.length > 0 ? (
         <section className="grid grid-cols-1 gap-4">
