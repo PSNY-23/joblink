@@ -17,7 +17,7 @@ function CreateJob() {
 
   const onSubmit = (data) => {
     
-    fetch("/api/post-job", {
+    fetch("https://joblink-backend-2.onrender.com/post-job", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify(data),

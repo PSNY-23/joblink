@@ -20,7 +20,7 @@ function Home() {
   useEffect(() => {
     setIsLoading(true);
     // const apiUrl = import.meta.env.VITE_API_URL;
-    fetch("/api/all-jobs")
+    fetch("https://joblink-backend-2.onrender.com/all-jobs")
       .then((res) => {
         if (!res.ok) throw new Error("Network response was not ok");
         return res.json();

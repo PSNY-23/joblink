@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { FaEnvelopeOpenText, FaRocket, FaCheckCircle, FaSpinner, FaTimesCircle } from "react-icons/fa"; // Added icons
+import {
+  FaEnvelopeOpenText,
+  FaRocket,
+  FaCheckCircle,
+  FaSpinner,
+  FaTimesCircle,
+} from "react-icons/fa"; // Added icons
 import { toast, ToastContainer } from "react-toastify"; // Import toast from react-toastify
 import "react-toastify/dist/ReactToastify.css"; // Import the CSS for the notifications
 
@@ -68,7 +74,7 @@ function NewsLetter() {
     formData.append("resume", file);
     formData.append("email", email);
 
-    fetch("/api/upload", {
+    fetch("https://joblink-backend-2.onrender.com/upload", {
       method: "POST",
       body: formData,
     })

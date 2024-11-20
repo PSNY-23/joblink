@@ -7,7 +7,7 @@ function MyJobs() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch('/myJobs/pankajteceract@gmail.com')
+    fetch('https://joblink-backend-2.onrender.com/myJobs/pankajteceract@gmail.com')
       .then((res) => res.json())
       .then((data) => setJobs(data));
   }, []);
