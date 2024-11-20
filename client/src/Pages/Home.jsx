@@ -6,29 +6,26 @@ import Sidebar from "../sidebar/Sidebar";
 import NewsLetter from "../components/NewsLetter";
 import { FaFilter } from "react-icons/fa6";
 
-
-
 function Home() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState({ jobPosition: "", jobLocation: "" });
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // The '/api' prefix will be proxied
 
-
   useEffect(() => {
     setIsLoading(true);
     // const apiUrl = import.meta.env.VITE_API_URL;
-    fetch('/api/all-jobs')
+    fetch("/api/all-jobs")
       .then((res) => {
         if (!res.ok) throw new Error("Network response was not ok");
         return res.json();
       })
-      
+
       .then((data) => {
         setJobs(data.reverse());
         setIsLoading(false);
@@ -39,23 +36,42 @@ function Home() {
       });
   }, []);
 
-  const handleInputChange = (event) => {
-    setQuery(event.target.value);
+  // Handle change for the job position
+  const handleJobPositionChange = (event) => {
+    setQuery({
+      ...query, // spread the existing query object
+      jobPosition: event.target.value, // update only jobPosition
+    });
+  };
+
+  // Handle change for the job location
+  const handleJobLocationChange = (event) => {
+    setQuery({
+      ...query, // spread the existing query object
+      jobLocation: event.target.value, // update only jobLocation
+    });
   };
 
   const filteredItems = useMemo(
     () =>
-      jobs.filter((job) =>
-        job?.jobTitle?.toLowerCase().includes(query.toLowerCase())
+      jobs.filter(
+        (job) =>
+          job?.jobTitle
+            ?.toLowerCase()
+            .includes(query.jobPosition.toLowerCase()) &&
+          job?.jobLocation
+            ?.toLowerCase()
+            .includes(query.jobLocation.toLowerCase())
       ),
-    [jobs, query]
+    [jobs, query] // Re-run when either jobs or query changes
   );
-  
 
   const handleChange = (event) => {
     setSelectedCategory(event.target.value);
     setCurrentPage(1);
   };
+
+ 
 
   const calculatePageRange = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -100,7 +116,11 @@ function Home() {
 
   return (
     <>
-      <Banner query={query} handleInputChange={handleInputChange} />
+      <Banner
+        query={query}
+        handleJobPositionChange={handleJobPositionChange}
+        handleJobLocationChange={handleJobLocationChange}
+      />
       <div className="bg-[#FAFAFA] lg:flex lg:px-24 px-4 py-12">
         {/* Sidebar for large screens */}
         <div className="hidden lg:block bg-white p-4 rounded">

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FiMapPin, FiSearch } from "react-icons/fi";
 
-function Banner({ query, handleInputChange }) {
+function Banner({ query,handleJobPositionChange ,handleJobLocationChange }) {
   return (
     <div className="max-w-screen-2xl container mx-auto lg:px-24 px-4 md:py-20 py-14">
       <h1 className="text-5xl font-bold text-primary mb-3">
@@ -28,8 +28,9 @@ function Banner({ query, handleInputChange }) {
               className="block flex-1 border-0 bg-transparent py-1.5 pl-8 text-gray-900
                           placeholder:text-gray-400 focus:right-0 sm:text-sm sm:leading-6
                            outline-none"
-              onChange={handleInputChange}
-              value={query}
+              onChange={handleJobPositionChange}
+              value={query.jobPosition}
+
             />
             <FiSearch className="absolute mt-2.5 ml-2 text-gray-400" />
           </div>
@@ -46,8 +47,8 @@ function Banner({ query, handleInputChange }) {
               className="block flex-1 border-0 bg-transparent py-1.5 pl-8 text-gray-900
                           placeholder:text-gray-400 focus:right-0 sm:text-sm sm:leading-6
                            outline-none"
-              onChange={handleInputChange}
-              value={query}
+              onChange={handleJobLocationChange}
+              value={query.jobLocation}
             />
             <FiMapPin className="absolute mt-2.5 ml-2 text-gray-400" />
           </div>

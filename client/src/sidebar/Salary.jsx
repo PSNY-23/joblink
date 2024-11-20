@@ -1,16 +1,11 @@
 import React from "react";
-import Button from "./Button";
 import InputField from "../components/InputField";
 
-function Salary({ handleChange, handleClick }) {
+function Salary({ handleChange}) {
   return (
     <div>
-      <h4 className="text-lg font-md mb-2">Salary</h4>
-      <div className="mb-4">
-        <Button onClickHandler={handleClick} value="" title="Hourly" />
-        <Button onClickHandler={handleClick} value="" title="Monthly" />
-        <Button onClickHandler={handleClick} value="" title="Yearly" />
-      </div>
+      <h4 className="text-lg font-semibold mb-2">Salary</h4>
+      
       <div className='flex flex-col gap-1'>
         <label className="sidebar-label-container" htmlFor="all">
           <input

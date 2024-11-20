@@ -5,7 +5,7 @@ import JobPostingData from "./JobPostingData";
 import WorkExperience from "./WorkExperience";
 import EmploymentType from "./EmploymentType";
 
-function Sidebar({ handleChange }) {
+function Sidebar({ handleChange}) {
     return (
         <div className='space-y-5'>
             <h3 className="text-lg font-bold mb-2">Filters</h3>
