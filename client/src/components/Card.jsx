@@ -18,7 +18,7 @@ function Card({ data }) {
   } = data;
 
   return (
-    <section className="card p-6 bg-white shadow-lg rounded-lg transition-transform hover:scale-105">
+    <section className="card p-6 bg-white border-zinc-200 border shadow-lg rounded-lg transition-transform hover:scale-105">
       <Link to={"/"} className="flex gap-6 flex-col sm:flex-row items-start">
         <img
           src={companyLogo}
